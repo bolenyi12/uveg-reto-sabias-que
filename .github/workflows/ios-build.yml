@@ -12,12 +12,14 @@ jobs:
       - name: Descargar código del repositorio
         uses: actions/checkout@v4
 
-      - name: Ejecutar Simulador y capturar pantalla
+      - name: Listar simuladores disponibles y ejecutar prueba
         run: |
+          SIM_ID=$(xcrun simctl list devices available iPhone | grep -m 1 -oE '[0-9A-F-]{36}')
+          echo "Usando simulador ID: $SIM_ID"
           xcodebuild test \
             -project "Reto 3 - Sabias Que.xcodeproj" \
             -scheme "Reto 3 - Sabias Que" \
-            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -destination "platform=iOS Simulator,id=$SIM_ID" \
             -resultBundlePath TestResults.xcresult \
             CODE_SIGNING_ALLOWED=NO
 

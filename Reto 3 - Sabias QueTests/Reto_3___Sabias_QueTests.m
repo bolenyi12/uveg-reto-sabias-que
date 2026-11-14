@@ -17,8 +17,14 @@
 }
 
 - (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
+    XCUIApplication *app = [[XCUIApplication alloc] init];
+    [app launch];
+    
+    // Toma una captura de la pantalla inicial y la guarda en los resultados
+    XCUIScreenshot *screenshot = [[XCUIScreen mainScreen] screenshot];
+    XCTAttachment *attachment = [XCTAttachment attachmentWithScreenshot:screenshot];
+    attachment.lifetime = XCTAttachmentLifetimeKeepAlways;
+    [self addAttachment:attachment];
 }
 
 - (void)testPerformanceExample {

@@ -204,9 +204,14 @@
 
     [contenido addSubview:self.mostrarButton];
 
+    [contenido addSubview:self.cienciaButton];
+    [contenido addSubview:self.historiaButton];
+    [contenido addSubview:self.tecnologiaButton];
+
     // Ventana de datos curiosos
 
     [self crearVentanaDatos];
+    [contenido addSubview:self.ventanaDatos];
 
     // Distribución vertical
 
