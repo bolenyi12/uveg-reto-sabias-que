@@ -1,0 +1,19 @@
+name: Compilar App iOS en la nube
+
+on:
+  push:
+    branches: ["master"]
+
+jobs:
+  build:
+    # GitHub levantará un servidor Mac en la nube aunque tú estés en Windows
+    runs-on: macos-latest
+
+    steps:
+      - name: Descargar código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Verificar entorno Xcode y archivos
+        run: |
+          xcodebuild -version
+          ls -la
