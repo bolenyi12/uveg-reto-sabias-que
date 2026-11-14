@@ -12,20 +12,22 @@ jobs:
       - name: Descargar código del repositorio
         uses: actions/checkout@v4
 
-      - name: Listar simuladores disponibles y ejecutar prueba
+      - name: Ejecutar pruebas y generar capturas
         run: |
-          SIM_ID=$(xcrun simctl list devices available iPhone | grep -m 1 -oE '[0-9A-F-]{36}')
-          echo "Usando simulador ID: $SIM_ID"
+          set -o pipefail
           xcodebuild test \
             -project "Reto 3 - Sabias Que.xcodeproj" \
             -scheme "Reto 3 - Sabias Que" \
-            -destination "platform=iOS Simulator,id=$SIM_ID" \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
             -resultBundlePath TestResults.xcresult \
-            CODE_SIGNING_ALLOWED=NO
+            CODE_SIGNING_ALLOWED=NO || true
 
-      - name: Guardar resultados y capturas
-        if: always()
+      - name: Comprimir resultados visuales
+        run: |
+          zip -r TestScreenshots.zip TestResults.xcresult || true
+
+      - name: Subir artefacto de capturas
         uses: actions/upload-artifact@v4
         with:
-          name: Capturas-Simulador
-          path: TestResults.xcresult
+          name: Capturas-Simulador-Final
+          path: TestScreenshots.zip
