@@ -32,6 +32,8 @@ jobs:
           echo "Usando dispositivo: $DEVICE_ID"
           xcrun simctl boot "$DEVICE_ID" || true
 
+          xcrun simctl bootstatus "$DEVICE_ID" -b
+
           # Instalar y lanzar la app compilada
           APP_PATH=$(find build/Build/Products/Debug-iphonesimulator -name "*.app" | head -n 1)
           echo "Ruta de la app: $APP_PATH"
