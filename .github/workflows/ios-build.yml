@@ -1,19 +1,29 @@
-name: Compilar App iOS en la nube
+name: Compilar y Capturar Pantalla iOS
 
 on:
   push:
-    branches: ["master"]
+    branches: ["main", "master"]
 
 jobs:
   build:
-    # GitHub levantará un servidor Mac en la nube aunque tú estés en Windows
     runs-on: macos-latest
 
     steps:
       - name: Descargar código del repositorio
         uses: actions/checkout@v4
 
-      - name: Verificar entorno Xcode y archivos
+      - name: Ejecutar Simulador y capturar pantalla
         run: |
-          xcodebuild -version
-          ls -la
+          xcodebuild test \
+            -project "Reto 3 - Sabias Que.xcodeproj" \
+            -scheme "Reto 3 - Sabias Que" \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            -resultBundlePath TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Guardar resultados y capturas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Capturas-Simulador
+          path: TestResults.xcresult
